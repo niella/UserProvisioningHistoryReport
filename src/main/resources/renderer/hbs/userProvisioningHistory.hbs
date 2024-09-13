@@ -1,0 +1,77 @@
+<div id="hypervisor-inventory-report">
+    <script nonce="{{webnonce}}" type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script nonce="{{webnonce}}" type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages': ['corechart']});
+        // Set a callback to run when the Google Visualization API is loaded, to create/populate the data table
+        google.charts.setOnLoadCallback(drawChart);
+
+
+        function drawChart() {
+            var userData = '{{ reportdata.main.0.dataMap.userJsonChart }}'
+            var yearMonthList = '{{ reportdata.main.0.dataMap.yearMonthListChart }}'
+            // Cleanup and parse
+            userData = JSON.parse(userData.replace(/&quot;/g, '"'))
+            yearMonthList = JSON.parse(yearMonthList.toString().replace(/&quot;/g, '"'))
+
+            var dataTable = new google.visualization.DataTable()
+            dataTable.addColumn('string', 'Month')
+
+            //create a list of monthnames
+            var monthRows = []
+            for (var i = 0; i < 12; i++) {
+                monthRows.push([yearMonthList[i]])
+            }
+
+            //iterate top 5 users and add chart data
+            for (var z = 0; z < 5; z++) {
+                dataTable.addColumn('number', userData[z].username)
+                for (var j = 0; j < 12; j++) {
+                    monthRows[j].push(userData[z].monthData[j].instCount)
+                }
+            }
+
+            monthRows.forEach(row => dataTable.addRow(row));
+
+            var options = {
+                title: 'Provisioning History',
+                hAxis: {title: 'Month',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+            // instantiates the line chart, passes in the data and draws it.
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(dataTable, options);
+        }
+
+    </script>
+
+    <div class="intro-stats">
+        <h2>Overview</h2>
+        <div id="chart_div"></div>
+    </div>
+    <br />
+    <table>
+        <thead>
+        <th>Username</th>
+        {{#each reportdata.main.0.dataMap.yearMonthList as |month|}}
+            <th>{{month}}</th>
+        {{/each}}
+        <th>Total</th>
+        </thead>
+        <tbody>
+        {{#each reportdata.main.0.dataMap.userJson as |user|}}
+            <tr>
+                <!-- Username column -->
+                <td>{{user.username}}</td>
+                <!-- Month data columns -->
+                {{#each user.monthData as |month|}}
+                    <td>{{month.instCount}}</td>
+                {{/each}}
+                <!-- Total column -->
+                <td>{{user.total}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
