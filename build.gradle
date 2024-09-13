@@ -72,12 +72,12 @@ sourceSets {
 jar {
 	manifest {
 		attributes(
-				'Plugin-Class': 'com.morpheusdata.report.instances.InstancesProvisionedOverTimePlugin',
+				'Plugin-Class': 'com.morpheusdata.report.instances.UserProvisioningHistoryPlugin',
 				'Plugin-Version': version,
-				'Morpheus-Name': 'Instances Provisioned Over Time',
+				'Morpheus-Name': 'User Provisioning History',
 				'Morpheus-Organization': 'morpheus',
-				'Morpheus-Code': 'instances-provisioned-over-time',
-				'Morpheus-Description': 'TODO: Fill in the Plugin Description',
+				'Morpheus-Code': 'user-provisioning-history',
+				'Morpheus-Description': 'View a history of the user provisioning',
 				'Morpheus-Logo': 'assets/morpheus.svg',
 				'Morpheus-Logo-Dark': 'assets/morpheus.svg',
 				'Morpheus-Labels': 'Plugin',
