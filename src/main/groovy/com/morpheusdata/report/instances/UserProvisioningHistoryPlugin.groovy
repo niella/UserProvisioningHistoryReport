@@ -21,15 +21,13 @@ class UserProvisioningHistoryPlugin extends Plugin {
 
     @Override
     String getCode() {
-        return 'instances-provisioned-over-time'
+        return 'user-provisioning-history'
     }
 
     @Override
     void initialize() {
-        this.setName("Instances Provisioned Over Time")
+        this.setName("User Provisioning History")
         this.registerProvider(new UserProvisioningHistoryReportProvider(this,this.morpheus))
-        
-		
     }
 
     /**
